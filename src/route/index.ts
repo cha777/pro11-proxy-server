@@ -2,6 +2,7 @@ import express from 'express';
 import type { Express } from 'express';
 import path from 'path';
 import proxyRoutes from './proxy-routes';
+import { srcDirectory } from '../directories';
 
 export const initializeRoutes = (app: Express): void => {
   let isStaticPageLoaded = false;
@@ -12,12 +13,10 @@ export const initializeRoutes = (app: Express): void => {
     if (isStaticPageLoaded) {
       next();
     } else {
-      const assetsPath = path.join(__dirname, '../../assets/dist');
-
-      app.use(express.static(assetsPath));
+      app.use(express.static(srcDirectory));
       isStaticPageLoaded = true;
 
-      return res.sendFile(path.join(assetsPath, 'index.html'));
+      return res.sendFile(path.join(srcDirectory, 'index.html'));
     }
   });
 };
